@@ -1,9 +1,9 @@
 package lu.kremi151.sushilist;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,6 +26,7 @@ import lu.kremi151.sushilist.util.DialogHelper;
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
 import lu.kremi151.sushilist.util.SushiListReference;
+import lu.kremi151.sushilist.util.SwipeToDeleteCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,16 +48,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.mainList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(getResources()) {
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                adapter.removeEntry(viewHolder.getAdapterPosition());
+            protected void onRemove(int position) {
+                adapter.removeEntry(position);
             }
+
         });
 
         itemTouchHelper.attachToRecyclerView(recyclerView);
