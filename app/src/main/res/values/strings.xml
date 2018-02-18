@@ -14,4 +14,5 @@
     <string name="dialogTitleError">An error occured</string>
     <string name="dialogTitleSaveAs">Enter a name for your list</string>
     <string name="menuItemNewList">New list</string>
+    <string name="menuItemSaveAs">Save list as...</string>
 </resources>

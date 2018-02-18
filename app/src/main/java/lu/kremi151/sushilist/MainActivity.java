@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void saveList() throws IOException{
+    private void saveList(boolean newFile) throws IOException{
         //TODO: Check for unsaved changes
-        if(!adapter.getList().hasFilename()){
+        if(newFile || !adapter.getList().hasFilename()){
             DialogHelper.buildInputDialog(this, R.string.dialogTitleSaveAs, new Callback<String>() {
                 @Override
                 public void callback(String obj) {
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                         //TODO: Update displayed title
                         adapter.getList().setFilename(String.valueOf(System.currentTimeMillis()));
                         try {
-                            saveList();
+                            saveList(false);
                         } catch (IOException e) {
                             e.printStackTrace();
                             DialogHelper.buildErrorDialog(MainActivity.this, e).show();
@@ -144,9 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 adapter.addNewEntry();
                 updateTitle();
                 return true;
+            case R.id.menuItemSaveAs:
             case R.id.menuItemSaveList:
                 try {
-                    saveList();
+                    saveList(item.getItemId() == R.id.menuItemSaveAs);
                 } catch (IOException e) {
                     e.printStackTrace();
                     DialogHelper.buildErrorDialog(this, e).show();
