@@ -1,5 +1,6 @@
 package lu.kremi151.sushilist;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,17 +9,15 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Locale;
 
 import lu.kremi151.sushilist.adapter.SushiEntryAdapter;
 import lu.kremi151.sushilist.serialization.SushiEntryParser;
@@ -29,15 +28,23 @@ import lu.kremi151.sushilist.util.SushiListReference;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView listView;
+    private TextView textViewTypes, textViewPieces, textViewPrice;
+    private RecyclerView recyclerView;
     private SushiEntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = findViewById(R.id.mainList);
-        listView.setLayoutManager(new GridLayoutManager(this, 1));
+
+        Locale.setDefault(getResources().getConfiguration().locale);
+
+        textViewTypes = findViewById(R.id.globalAmountTypes);
+        textViewPieces = findViewById(R.id.globalTotalPieces);
+        textViewPrice = findViewById(R.id.globalTotalPrice);
+
+        recyclerView = findViewById(R.id.mainList);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -51,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        itemTouchHelper.attachToRecyclerView(listView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         switchList(new SushiList());
     }
 
     private void switchList(SushiList list){
         adapter = new SushiEntryAdapter(list, getLayoutInflater(), sushiListener);
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         updateOrderInformation(list);
     }
 
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateOrderInformation(SushiList list){
         int pieces = 0;
         float price = 0.0f;
@@ -77,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
             pieces += entry.getPieces() * entry.getAmount();
             price += entry.getPrice() * entry.getAmount();
         }
-        ((TextView)findViewById(R.id.globalAmountTypes)).setText(String.valueOf(list.getEntries().size()));
-        ((TextView)findViewById(R.id.globalTotalPieces)).setText(String.valueOf(pieces));
-        ((TextView)findViewById(R.id.globalTotalPrice)).setText(String.format("%.2f€", price));
+        textViewTypes.setText(String.valueOf(list.getEntries().size()));
+        textViewPieces.setText(String.valueOf(pieces));
+        textViewPrice.setText(String.format("%.2f€", price));
         updateTitle();
     }
 
