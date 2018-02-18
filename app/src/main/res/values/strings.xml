@@ -10,4 +10,6 @@
     <string name="menuItemAddEntry">New entry</string>
     <string name="menuItemSaveList">Save list</string>
     <string name="menuItemLoadList">Load list...</string>
+    <string name="dialogTitleLoadList">Select a list to load</string>
+    <string name="dialogTitleError">An error occured</string>
 </resources>

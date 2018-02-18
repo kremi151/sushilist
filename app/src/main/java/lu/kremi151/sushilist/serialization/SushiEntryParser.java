@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -105,12 +106,15 @@ public class SushiEntryParser {
                 SAXParser parser = PARSER_FACTORY.newSAXParser();
                 SushiListTitleHandler handler = new SushiListTitleHandler();
                 parser.parse(inputStream, handler);
-                final String title = handler.getTitle();
-                if(title != null){
-                    refs.add(new SushiListReference(handler.getTitle(), file));
-                }else{
-                    refs.add(new SushiListReference("Unnamed (" + file.getName() + ")", file));
+                String title = handler.getTitle();
+                Calendar date = handler.getDate();
+                if(title == null){
+                    title = "Unnamed (" + file.getName() + ")";
                 }
+                if(date == null){
+                    date = Calendar.getInstance();
+                }
+                refs.add(new SushiListReference(title, date, file));
             } catch (ParserConfigurationException | SAXException | IOException e) {
                 throw new IOException(e);
             } finally{

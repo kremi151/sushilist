@@ -1,4 +1,4 @@
-package lu.kremi151.sushilist;
+package lu.kremi151.sushilist.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lu.kremi151.sushilist.Callback;
+import lu.kremi151.sushilist.R;
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
 
@@ -25,13 +27,13 @@ public class SushiEntryAdapter extends BaseAdapter{
     private final LayoutInflater inflater;
     private final Callback<SushiList> listener;
 
-    SushiEntryAdapter(SushiList list, LayoutInflater inflater, Callback<SushiList> listener){
+    public SushiEntryAdapter(SushiList list, LayoutInflater inflater, Callback<SushiList> listener){
         this.list = list;
         this.inflater = inflater;
         this.listener = listener;
     }
 
-    SushiEntryAdapter(LayoutInflater inflater, Callback<SushiList> listener){
+    public SushiEntryAdapter(LayoutInflater inflater, Callback<SushiList> listener){
         this(new SushiList(), inflater, listener);
     }
 

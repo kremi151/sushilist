@@ -4,6 +4,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.Calendar;
+
 import static lu.kremi151.sushilist.serialization.SushiListParserHandler.*;
 
 /**
@@ -13,12 +15,17 @@ import static lu.kremi151.sushilist.serialization.SushiListParserHandler.*;
 public class SushiListTitleHandler extends DefaultHandler {
 
     private String title = null;
+    private Calendar date = null;
     private StringBuilder builder;
 
     SushiListTitleHandler(){}
 
     public String getTitle(){
         return title;
+    }
+
+    public Calendar getDate(){
+        return date;
     }
 
     @Override
@@ -33,6 +40,17 @@ public class SushiListTitleHandler extends DefaultHandler {
         if (localName.equalsIgnoreCase(ROOT_TAG)){
             if(this.title == null){
                 this.title = attributes.getValue("title");
+            }else{
+                throw new SAXException("Unexpected root tag \"" + ROOT_TAG + "\"");
+            }
+            if(this.date == null){
+                try{
+                    long timestamp = Long.parseLong(attributes.getValue("timestamp"));
+                    date = Calendar.getInstance();
+                    date.setTimeInMillis(timestamp);
+                }catch(NumberFormatException e){
+                    throw new SAXException(e);
+                }
             }else{
                 throw new SAXException("Unexpected root tag \"" + ROOT_TAG + "\"");
             }

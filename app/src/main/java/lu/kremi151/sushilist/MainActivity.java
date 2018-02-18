@@ -8,21 +8,33 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.List;
 
+import lu.kremi151.sushilist.adapter.SushiEntryAdapter;
+import lu.kremi151.sushilist.serialization.SushiEntryParser;
+import lu.kremi151.sushilist.util.DialogHelper;
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
+import lu.kremi151.sushilist.util.SushiListReference;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ListView listView;
     private SushiEntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adapter = new SushiEntryAdapter(getLayoutInflater(), sushiListener);
-        ((ListView)findViewById(R.id.mainList)).setAdapter(adapter);
+        listView = findViewById(R.id.mainList);
+        switchList(new SushiList());
+    }
+
+    private void switchList(SushiList list){
+        adapter = new SushiEntryAdapter(list, getLayoutInflater(), sushiListener);
+        listView.setAdapter(adapter);
+        //TODO: Title
     }
 
     private final Callback<SushiList> sushiListener = new Callback<SushiList>() {
@@ -58,7 +70,26 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             case R.id.menuItemLoadList:
-
+                //TODO: Check for unsaved changes
+                try {
+                    DialogHelper.buildLoadDialog(
+                            this,
+                            SushiEntryParser.getSavedReferences(this),
+                            new Callback<SushiListReference>() {
+                                @Override
+                                public void callback(SushiListReference obj) {
+                                    try {
+                                        switchList(obj.resolve());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        DialogHelper.buildErrorDialog(MainActivity.this, e).show();
+                                    }
+                                }
+                            }).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    DialogHelper.buildErrorDialog(this, e).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

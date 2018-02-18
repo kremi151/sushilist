@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import lu.kremi151.sushilist.serialization.SushiEntryParser;
 
@@ -14,15 +15,21 @@ import lu.kremi151.sushilist.serialization.SushiEntryParser;
 
 public class SushiListReference {
     private final String title;
+    private final Calendar date;
     private final File file;
 
-    public SushiListReference(String title, File file){
+    public SushiListReference(String title, Calendar date, File file){
         this.title = title;
+        this.date = date;
         this.file = file;
     }
 
     public String getTitle(){
         return title;
+    }
+
+    public Calendar getDate(){
+        return date;
     }
 
     public File getFile(){
