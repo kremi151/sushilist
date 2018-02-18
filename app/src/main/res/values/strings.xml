@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Sushi List</string>
+    <string name="sushiEntryName">Sushi name</string>
+    <string name="sushiEntryAmount">Amount</string>
+    <string name="sushiEntryPrice">Price</string>
+    <string name="sushiEntryPieces">Pieces</string>
+    <string name="infoAmountTypes">Types of sushi</string>
+    <string name="infoTotalPieces">Total pieces</string>
+    <string name="infoTotalPrice">Total price</string>
+    <string name="menuItemAddEntry">New entry</string>
+    <string name="menuItemSaveList">Save list</string>
+    <string name="menuItemLoadList">Load list...</string>
+</resources>
