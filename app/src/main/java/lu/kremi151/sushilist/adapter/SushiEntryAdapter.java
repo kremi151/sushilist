@@ -1,14 +1,13 @@
 package lu.kremi151.sushilist.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import lu.kremi151.sushilist.util.SushiList;
  * Created by michm on 17.02.2018.
  */
 
-public class SushiEntryAdapter extends BaseAdapter{
+public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.SushiEntryViewHolder>{
 
     private final SushiList list;
     private final LayoutInflater inflater;
@@ -52,13 +51,24 @@ public class SushiEntryAdapter extends BaseAdapter{
     }
 
     @Override
-    public int getCount() {
-        return list.getEntries().size();
+    public SushiEntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.sushi_entry, parent, false);
+        SushiEntryViewHolder holder = new SushiEntryViewHolder(view);
+        holder.entryName.addTextChangedListener(new EntryNameWatcher(holder));
+        holder.entryPieces.addTextChangedListener(new EntryPiecesWatcher(holder));
+        holder.entryAmount.addTextChangedListener(new EntryAmountWatcher(holder));
+        holder.entryPrice.addTextChangedListener(new EntryPriceWatcher(holder));
+        return holder;
     }
 
     @Override
-    public Object getItem(int i) {
-        return list.getEntries().get(i);
+    public void onBindViewHolder(SushiEntryViewHolder holder, int position) {
+        SushiEntry entry = list.getEntries().get(position);
+        holder.referenced = entry;
+        holder.entryName.setText(entry.getName());
+        holder.entryPieces.setText(String.valueOf(entry.getPieces()));
+        holder.entryAmount.setText(String.valueOf(entry.getAmount()));
+        holder.entryPrice.setText(String.valueOf(entry.getPrice()));
     }
 
     @Override
@@ -67,46 +77,23 @@ public class SushiEntryAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        EntryState holder = null;
-        if(view == null){
-            view = inflater.inflate(R.layout.sushi_entry, viewGroup, false);
-            holder = new EntryState(
-                    (EditText)view.findViewById(R.id.entryName),
-                    (EditText)view.findViewById(R.id.entryPieces),
-                    (EditText)view.findViewById(R.id.entryAmount),
-                    (EditText)view.findViewById(R.id.entryPrice)
-            );
-            holder.entryName.addTextChangedListener(new EntryNameWatcher(holder));
-            holder.entryPieces.addTextChangedListener(new EntryPiecesWatcher(holder));
-            holder.entryAmount.addTextChangedListener(new EntryAmountWatcher(holder));
-            holder.entryPrice.addTextChangedListener(new EntryPriceWatcher(holder));
-            view.setTag(holder);
-        }else{
-            holder = (EntryState) view.getTag();
-        }
-        SushiEntry entry = list.getEntries().get(i);
-        holder.referenced = entry;
-        holder.entryName.setText(entry.getName());
-        holder.entryPieces.setText(""+entry.getPieces());
-        holder.entryAmount.setText(""+entry.getAmount());
-        holder.entryPrice.setText(""+entry.getPrice());
-
-        return view;
+    public int getItemCount() {
+        return list.getEntries().size();
     }
 
-    private static class EntryState {
+    public static class SushiEntryViewHolder extends RecyclerView.ViewHolder {
         private SushiEntry referenced;
         private final EditText entryName;
         private final EditText entryPieces;
         private final EditText entryAmount;
         private final EditText entryPrice;
 
-        private EntryState(EditText entryName, EditText entryPieces, EditText entryAmount, EditText entryPrice){
-            this.entryName = entryName;
-            this.entryPieces = entryPieces;
-            this.entryAmount = entryAmount;
-            this.entryPrice = entryPrice;
+        private SushiEntryViewHolder(View view){
+            super(view);
+            this.entryName = view.findViewById(R.id.entryName);
+            this.entryPieces = view.findViewById(R.id.entryPieces);
+            this.entryAmount = view.findViewById(R.id.entryAmount);
+            this.entryPrice = view.findViewById(R.id.entryPrice);
         }
     }
 
@@ -124,9 +111,9 @@ public class SushiEntryAdapter extends BaseAdapter{
 
     private class EntryNameWatcher extends ConvenientTextWatcher{
 
-        private final EntryState state;
+        private final SushiEntryViewHolder state;
 
-        private EntryNameWatcher(EntryState state){
+        private EntryNameWatcher(SushiEntryViewHolder state){
             this.state = state;
         }
 
@@ -142,9 +129,9 @@ public class SushiEntryAdapter extends BaseAdapter{
 
     private class EntryPiecesWatcher extends ConvenientTextWatcher{
 
-        private final EntryState state;
+        private final SushiEntryViewHolder state;
 
-        private EntryPiecesWatcher(EntryState state){
+        private EntryPiecesWatcher(SushiEntryViewHolder state){
             this.state = state;
         }
 
@@ -164,9 +151,9 @@ public class SushiEntryAdapter extends BaseAdapter{
 
     private class EntryAmountWatcher extends ConvenientTextWatcher{
 
-        private final EntryState state;
+        private final SushiEntryViewHolder state;
 
-        private EntryAmountWatcher(EntryState state){
+        private EntryAmountWatcher(SushiEntryViewHolder state){
             this.state = state;
         }
 
@@ -186,9 +173,9 @@ public class SushiEntryAdapter extends BaseAdapter{
 
     private class EntryPriceWatcher extends ConvenientTextWatcher{
 
-        private final EntryState state;
+        private final SushiEntryViewHolder state;
 
-        private EntryPriceWatcher(EntryState state){
+        private EntryPriceWatcher(SushiEntryViewHolder state){
             this.state = state;
         }
 

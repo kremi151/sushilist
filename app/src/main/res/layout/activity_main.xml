@@ -7,13 +7,14 @@
     android:orientation="vertical"
     tools:context="lu.kremi151.sushilist.MainActivity">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/mainList"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="3">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <GridLayout
         android:layout_width="match_parent"
