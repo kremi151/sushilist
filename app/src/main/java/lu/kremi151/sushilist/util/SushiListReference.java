@@ -40,7 +40,9 @@ public class SushiListReference {
         FileInputStream inputStream = null;
         try{
             inputStream = new FileInputStream(file);
-            return SushiEntryParser.parse(inputStream);
+            SushiList list = SushiEntryParser.parse(inputStream);
+            list.setFilename(file.getName().substring(0, file.getName().lastIndexOf(".")));
+            return list;
         }catch(IOException e){
             throw e;
         } catch (SAXException e) {
