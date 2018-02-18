@@ -34,7 +34,7 @@ public class SushiEntryAdapter extends BaseAdapter{
     }
 
     public SushiEntryAdapter(LayoutInflater inflater, Callback<SushiList> listener){
-        this(new SushiList(), inflater, listener);
+        this(new SushiList().markDirty(true), inflater, listener);
     }
 
     public SushiList getList(){

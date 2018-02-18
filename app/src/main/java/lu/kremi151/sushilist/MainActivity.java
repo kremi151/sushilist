@@ -153,9 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menuItemNewList:
                 //TODO: Check for unsaved changes
-                SushiList list = new SushiList();
-                list.markDirty(true);
-                switchList(list);
+                switchList(new SushiList().markDirty(true));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

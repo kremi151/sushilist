@@ -61,8 +61,9 @@ public class SushiList implements Iterable<SushiEntry>{
         return isDirty;
     }
 
-    public void markDirty(boolean value){
+    public SushiList markDirty(boolean value){
         isDirty = value;
+        return this;
     }
 
     @NonNull
