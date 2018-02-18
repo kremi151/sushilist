@@ -5,6 +5,9 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -80,6 +83,22 @@ public class DialogHelper {
             }
         });
         return builder.create();
+    }
+
+    public static AlertDialog buildNonDismissableWaitDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        ProgressBar progressBar = new ProgressBar(context);
+        progressBar.setIndeterminate(true);
+        layout.addView(progressBar);
+        TextView textView = new TextView(context);
+        textView.setText(R.string.pleaseWait);
+        layout.addView(textView);
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
     }
 
 }

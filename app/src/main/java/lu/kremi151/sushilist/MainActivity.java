@@ -1,6 +1,7 @@
 package lu.kremi151.sushilist;
 
 import android.annotation.SuppressLint;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -170,12 +171,15 @@ public class MainActivity extends AppCompatActivity {
                             new Callback<SushiListReference>() {
                                 @Override
                                 public void callback(SushiListReference obj) {
-                                    try {
-                                        switchList(obj.resolve());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                        DialogHelper.buildErrorDialog(MainActivity.this, e).show();
-                                    }
+                                    final AlertDialog waitDialog = DialogHelper.buildNonDismissableWaitDialog(MainActivity.this);
+                                    waitDialog.show();
+                                    obj.resolveAsync(new Callback<SushiList>() {
+                                        @Override
+                                        public void callback(SushiList obj) {
+                                            switchList(obj);
+                                            waitDialog.dismiss();
+                                        }
+                                    });
                                 }
                             }).show();
                 } catch (IOException e) {

@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
+import lu.kremi151.sushilist.Callback;
 import lu.kremi151.sushilist.serialization.SushiListParser;
+import lu.kremi151.sushilist.task.SushiListLoader;
 
 /**
  * Created by michm on 18.02.2018.
@@ -52,5 +54,9 @@ public class SushiListReference {
                 inputStream.close();
             }
         }
+    }
+
+    public void resolveAsync(Callback<SushiList> callback){
+        new SushiListLoader(callback).execute(file);
     }
 }
