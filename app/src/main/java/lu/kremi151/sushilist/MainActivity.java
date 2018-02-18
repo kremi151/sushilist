@@ -8,7 +8,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import lu.kremi151.sushilist.adapter.SushiEntryAdapter;
@@ -60,6 +66,45 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void saveList() throws IOException{
+        //TODO: Check for unsaved changes
+        if(!adapter.getList().hasFilename()){
+            DialogHelper.buildInputDialog(this, R.string.dialogTitleSaveAs, new Callback<String>() {
+                @Override
+                public void callback(String obj) {
+                    if(obj != null && obj.length() > 0){
+                        adapter.getList().setTitle(obj);
+                        //TODO: Update displayed title
+                        adapter.getList().setFilename(String.valueOf(System.currentTimeMillis()));
+                        try {
+                            saveList();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            DialogHelper.buildErrorDialog(MainActivity.this, e).show();
+                        }
+                    }
+                }
+            }).show();
+            return;
+        }
+        adapter.getList().setDate(Calendar.getInstance());
+        File outputFile = new File(getFilesDir(), adapter.getList().getFilename() + ".xml");
+        FileOutputStream outputStream = null;
+        //TODO: Mark as saved
+        try{
+            outputStream = new FileOutputStream(outputFile);
+            SushiEntryParser.write(outputStream, adapter.getList());
+        } catch (IOException e) {
+            throw e;
+        } catch (SAXException e) {
+            throw new IOException(e);
+        } finally{
+            if(outputStream != null){
+                outputStream.close();
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
@@ -67,7 +112,12 @@ public class MainActivity extends AppCompatActivity {
                 adapter.addNewEntry();
                 return true;
             case R.id.menuItemSaveList:
-
+                try {
+                    saveList();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    DialogHelper.buildErrorDialog(this, e).show();
+                }
                 return true;
             case R.id.menuItemLoadList:
                 //TODO: Check for unsaved changes

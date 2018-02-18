@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.widget.EditText;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -58,6 +59,27 @@ public class DialogHelper {
         PrintWriter pw = new PrintWriter(sw);
         throwable.printStackTrace(pw);
         return buildMessageDialog(context, R.string.dialogTitleError, sw.toString());
+    }
+
+    public static AlertDialog buildInputDialog(Context context, int titleRes, final Callback<String> listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(titleRes);
+        final EditText textView = new EditText(context);
+        builder.setView(textView);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                listener.callback(textView.getText().toString());
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        return builder.create();
     }
 
 }

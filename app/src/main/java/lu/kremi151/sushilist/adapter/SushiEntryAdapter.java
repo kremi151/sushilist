@@ -37,6 +37,10 @@ public class SushiEntryAdapter extends BaseAdapter{
         this(new SushiList(), inflater, listener);
     }
 
+    public SushiList getList(){
+        return list;
+    }
+
     public List<SushiEntry> getImmutableEntryList(){
         return Collections.unmodifiableList(list.getEntries());
     }

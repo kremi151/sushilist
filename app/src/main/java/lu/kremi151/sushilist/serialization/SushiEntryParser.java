@@ -55,7 +55,12 @@ public class SushiEntryParser {
             serializer.setOutput(writer);
             serializer.startDocument("UTF-8", true);
             serializer.startTag("", ROOT_TAG);
-            //serializer.attribute("", "number", String.valueOf(messages.size()));
+            if(entries.getTitle() != null)serializer.attribute("", "title", entries.getTitle());
+            if(entries.getDate() != null){
+                serializer.attribute("", "timestamp", String.valueOf(entries.getDate().getTimeInMillis()));
+            }else{
+                serializer.attribute("", "timestamp", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+            }
             for (SushiEntry entry : entries){
                 serializer.startTag("", ENTRY);
 
