@@ -19,6 +19,8 @@ public class SushiList implements Iterable<SushiEntry>{
     private String filename = null;
     private Calendar date;
 
+    private boolean isDirty = false;
+
     public SushiList(){
         this.date = Calendar.getInstance();
     }
@@ -53,6 +55,14 @@ public class SushiList implements Iterable<SushiEntry>{
 
     public void setFilename(String filename){
         this.filename = filename;
+    }
+
+    public boolean isDirty(){
+        return isDirty;
+    }
+
+    public void markDirty(boolean value){
+        isDirty = value;
     }
 
     @NonNull

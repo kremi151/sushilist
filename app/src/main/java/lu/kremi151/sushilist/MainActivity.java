@@ -40,12 +40,20 @@ public class MainActivity extends AppCompatActivity {
     private void switchList(SushiList list){
         adapter = new SushiEntryAdapter(list, getLayoutInflater(), sushiListener);
         listView.setAdapter(adapter);
-        //TODO: Title
+        updateTitle();
+    }
+
+    private void updateTitle(){
+        if(adapter.getList().isDirty()){
+            setTitle("* " + adapter.getList().getTitle());
+        }else{
+            setTitle(adapter.getList().getTitle());
+        }
     }
 
     private final Callback<SushiList> sushiListener = new Callback<SushiList>() {
         @Override
-        public void callback(SushiList obj) {
+        public void callback(SushiList obj) {//TODO: Track value changements for saving
             int pieces = 0;
             float price = 0.0f;
             List<SushiEntry> list = obj.getEntries();
@@ -90,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.getList().setDate(Calendar.getInstance());
         File outputFile = new File(getFilesDir(), adapter.getList().getFilename() + ".xml");
         FileOutputStream outputStream = null;
-        //TODO: Mark as saved
+        adapter.getList().markDirty(false);
+        updateTitle();
         try{
             outputStream = new FileOutputStream(outputFile);
             SushiEntryParser.write(outputStream, adapter.getList());
@@ -110,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.menuItemAdd:
                 adapter.addNewEntry();
+                updateTitle();
                 return true;
             case R.id.menuItemSaveList:
                 try {
@@ -143,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menuItemNewList:
                 //TODO: Check for unsaved changes
-                switchList(new SushiList());
+                SushiList list = new SushiList();
+                list.markDirty(true);
+                switchList(list);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

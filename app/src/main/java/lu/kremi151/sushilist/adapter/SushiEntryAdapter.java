@@ -47,6 +47,7 @@ public class SushiEntryAdapter extends BaseAdapter{
 
     public void addNewEntry(){
         list.getEntries().add(new SushiEntry());
+        list.markDirty(true);
         notifyDataSetChanged();
     }
 
