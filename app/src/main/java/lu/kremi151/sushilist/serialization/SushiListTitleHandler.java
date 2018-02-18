@@ -45,9 +45,12 @@ public class SushiListTitleHandler extends DefaultHandler {
             }
             if(this.date == null){
                 try{
-                    long timestamp = Long.parseLong(attributes.getValue("timestamp"));
-                    date = Calendar.getInstance();
-                    date.setTimeInMillis(timestamp);
+                    final String rawTimestamp = attributes.getValue("timestamp");
+                    if(rawTimestamp != null){
+                        long timestamp = Long.parseLong(rawTimestamp);
+                        date = Calendar.getInstance();
+                        date.setTimeInMillis(timestamp);
+                    }
                 }catch(NumberFormatException e){
                     throw new SAXException(e);
                 }
