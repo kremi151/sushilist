@@ -2,6 +2,7 @@ package lu.kremi151.sushilist;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.xml.sax.SAXException;
@@ -51,8 +53,17 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(getResources()) {
 
             @Override
-            protected void onRemove(int position) {
-                adapter.removeEntry(position);
+            protected void onRemove(final int position) {
+                final SushiEntry removed = adapter.removeEntry(position);
+                Snackbar
+                        .make(findViewById(R.id.coordinatorLayout), getString(R.string.messageEntriesRemoved, 1), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.actionUndo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                adapter.insertEntry(position, removed);
+                            }
+                        })
+                        .show();
             }
 
         });

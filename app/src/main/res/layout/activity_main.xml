@@ -1,75 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="lu.kremi151.sushilist.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mainList"
-        android:scrollbars="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="3">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mainList"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="3">
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBottomBox"
-        android:columnCount="3"
-        android:padding="8dp">
+        </android.support.v7.widget.RecyclerView>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/infoAmountTypes"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:background="@color/colorBottomBox"
+            android:columnCount="3"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/globalAmountTypes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:text="0"
-            android:textColor="?android:attr/textColorPrimary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/infoAmountTypes"
+                android:textColor="?android:attr/textColorPrimary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:text="@string/infoTotalPieces"
-            android:textColor="?android:attr/textColorPrimary" />
+            <TextView
+                android:id="@+id/globalAmountTypes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="0"
+                android:text="0"
+                android:textColor="?android:attr/textColorPrimary" />
 
-        <TextView
-            android:id="@+id/globalTotalPieces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="1"
-            android:text="0"
-            android:textColor="?android:attr/textColorPrimary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:text="@string/infoTotalPieces"
+                android:textColor="?android:attr/textColorPrimary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:text="@string/infoTotalPrice"
-            android:textColor="?android:attr/textColorPrimary" />
+            <TextView
+                android:id="@+id/globalTotalPieces"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="1"
+                android:text="0"
+                android:textColor="?android:attr/textColorPrimary" />
 
-        <TextView
-            android:id="@+id/globalTotalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="2"
-            android:text="0€"
-            android:textColor="?android:attr/textColorPrimary" />
-    </GridLayout>
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:text="@string/infoTotalPrice"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:id="@+id/globalTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="2"
+                android:text="0€"
+                android:textColor="?android:attr/textColorPrimary" />
+        </GridLayout>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -40,8 +40,18 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         return list;
     }
 
-    public void removeEntry(int position){
-        list.getEntries().remove(position);
+    public SushiEntry removeEntry(int position){
+        SushiEntry removed = list.getEntries().remove(position);
+        if(removed != null){
+            list.markDirty(true);
+            notifyDataSetChanged();
+            listener.callback(list);
+        }
+        return removed;
+    }
+
+    public void insertEntry(int position, SushiEntry entry){
+        list.getEntries().add(position, entry);
         list.markDirty(true);
         notifyDataSetChanged();
         listener.callback(list);
