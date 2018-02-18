@@ -12,13 +12,13 @@ import static lu.kremi151.sushilist.serialization.SushiListParserHandler.*;
  * Created by michm on 18.02.2018.
  */
 
-public class SushiListTitleHandler extends DefaultHandler {
+public class SushiListMetaParserHandler extends DefaultHandler {
 
     private String title = null;
     private Calendar date = null;
     private StringBuilder builder;
 
-    SushiListTitleHandler(){}
+    SushiListMetaParserHandler(){}
 
     public String getTitle(){
         return title;

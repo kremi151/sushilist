@@ -33,7 +33,7 @@ import static lu.kremi151.sushilist.serialization.SushiListParserHandler.*;
  * Created by michm on 18.02.2018.
  */
 
-public class SushiEntryParser {
+public class SushiListParser {
 
     private static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance();
 
@@ -109,7 +109,7 @@ public class SushiEntryParser {
             try {
                 inputStream = new FileInputStream(file);
                 SAXParser parser = PARSER_FACTORY.newSAXParser();
-                SushiListTitleHandler handler = new SushiListTitleHandler();
+                SushiListMetaParserHandler handler = new SushiListMetaParserHandler();
                 parser.parse(inputStream, handler);
                 String title = handler.getTitle();
                 Calendar date = handler.getDate();

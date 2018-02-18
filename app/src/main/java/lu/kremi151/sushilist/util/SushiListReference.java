@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
-import lu.kremi151.sushilist.serialization.SushiEntryParser;
+import lu.kremi151.sushilist.serialization.SushiListParser;
 
 /**
  * Created by michm on 18.02.2018.
@@ -40,7 +40,7 @@ public class SushiListReference {
         FileInputStream inputStream = null;
         try{
             inputStream = new FileInputStream(file);
-            SushiList list = SushiEntryParser.parse(inputStream);
+            SushiList list = SushiListParser.parse(inputStream);
             list.setFilename(file.getName().substring(0, file.getName().lastIndexOf(".")));
             return list;
         }catch(IOException e){

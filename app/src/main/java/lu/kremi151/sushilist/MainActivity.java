@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import lu.kremi151.sushilist.adapter.SushiEntryAdapter;
-import lu.kremi151.sushilist.serialization.SushiEntryParser;
+import lu.kremi151.sushilist.serialization.SushiListParser;
 import lu.kremi151.sushilist.util.DialogHelper;
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         updateTitle();
         try{
             outputStream = new FileOutputStream(outputFile);
-            SushiEntryParser.write(outputStream, adapter.getList());
+            SushiListParser.write(outputStream, adapter.getList());
         } catch (IOException e) {
             throw e;
         } catch (SAXException e) {
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     DialogHelper.buildLoadDialog(
                             this,
-                            SushiEntryParser.getSavedReferences(this),
+                            SushiListParser.getSavedReferences(this),
                             new Callback<SushiListReference>() {
                                 @Override
                                 public void callback(SushiListReference obj) {
