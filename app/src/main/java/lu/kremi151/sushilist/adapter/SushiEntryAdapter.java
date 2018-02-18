@@ -138,11 +138,17 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         @Override
         public void afterTextChanged(Editable editable) {
             if(state.referenced != null){
-                try{
-                    state.referenced.setPieces(Integer.parseInt(editable.toString()));
+                final String input = editable.toString();
+                if(input.length() > 0){
+                    try{
+                        state.referenced.setPieces(Integer.parseInt(input));
+                        listener.callback(list);
+                    }catch(NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    state.referenced.setPieces(0);
                     listener.callback(list);
-                }catch(NumberFormatException e){
-                    e.printStackTrace();
                 }
             }
         }
@@ -160,11 +166,17 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         @Override
         public void afterTextChanged(Editable editable) {
             if(state.referenced != null){
-                try{
-                    state.referenced.setAmount(Integer.parseInt(editable.toString()));
+                final String input = editable.toString();
+                if(input.length() > 0){
+                    try{
+                        state.referenced.setAmount(Integer.parseInt(input));
+                        listener.callback(list);
+                    }catch(NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    state.referenced.setAmount(0);
                     listener.callback(list);
-                }catch(NumberFormatException e){
-                    e.printStackTrace();
                 }
             }
         }
@@ -182,11 +194,17 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         @Override
         public void afterTextChanged(Editable editable) {
             if(state.referenced != null){
-                try{
-                    state.referenced.setPrice(Float.parseFloat(editable.toString()));
+                final String input = editable.toString();
+                if(input.length() > 0){
+                    try{
+                        state.referenced.setPrice(Float.parseFloat(input));
+                        listener.callback(list);
+                    }catch(NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    state.referenced.setPrice(0.0f);
                     listener.callback(list);
-                }catch(NumberFormatException e){
-                    e.printStackTrace();
                 }
             }
         }
