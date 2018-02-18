@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
             pieces += entry.getPieces() * entry.getAmount();
             price += entry.getPrice() * entry.getAmount();
         }
-        ((TextView)findViewById(R.id.globalAmountTypes)).setText("" + list.getEntries().size());
-        ((TextView)findViewById(R.id.globalTotalPieces)).setText("" + pieces);
-        ((TextView)findViewById(R.id.globalTotalPrice)).setText("" + price + "€");
+        ((TextView)findViewById(R.id.globalAmountTypes)).setText(String.valueOf(list.getEntries().size()));
+        ((TextView)findViewById(R.id.globalTotalPieces)).setText(String.valueOf(pieces));
+        ((TextView)findViewById(R.id.globalTotalPrice)).setText(String.format("%.2f€", price));
         updateTitle();
     }
 
