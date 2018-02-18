@@ -13,4 +13,5 @@
     <string name="dialogTitleLoadList">Select a list to load</string>
     <string name="dialogTitleError">An error occured</string>
     <string name="dialogTitleSaveAs">Enter a name for your list</string>
+    <string name="menuItemNewList">New list</string>
 </resources>

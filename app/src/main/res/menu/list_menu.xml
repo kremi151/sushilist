@@ -16,4 +16,8 @@
         android:id="@+id/menuItemLoadList"
         android:title="@string/menuItemLoadList"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menuItemNewList"
+        android:title="@string/menuItemNewList"
+        app:showAsAction="never" />
 </menu>

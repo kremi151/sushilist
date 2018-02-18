@@ -141,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
                     DialogHelper.buildErrorDialog(this, e).show();
                 }
                 return true;
+            case R.id.menuItemNewList:
+                //TODO: Check for unsaved changes
+                switchList(new SushiList());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
