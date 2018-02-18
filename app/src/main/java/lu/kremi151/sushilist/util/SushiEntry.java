@@ -1,4 +1,4 @@
-package lu.kremi151.sushilist;
+package lu.kremi151.sushilist.util;
 
 /**
  * Created by michm on 17.02.2018.

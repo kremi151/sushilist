@@ -4,10 +4,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
-import lu.kremi151.sushilist.SushiEntry;
+import lu.kremi151.sushilist.util.SushiEntry;
+import lu.kremi151.sushilist.util.SushiList;
 
 /**
  * Created by michm on 18.02.2018.
@@ -15,34 +15,51 @@ import lu.kremi151.sushilist.SushiEntry;
 
 public class SushiListParserHandler extends DefaultHandler {
 
-    static final String ROOT_TAG = "entries";
+    static final String ROOT_TAG = "order";
     static final String ENTRY = "entry";
     static final String NAME = "name";
     static final String PIECES = "pieces";
     static final String AMOUNT = "amount";
     static final String PRICE = "price";
 
-    private List<SushiEntry> entries;
+    private SushiList list = null;
     private StringBuilder builder;
     private SushiEntry currentEntry;
 
     SushiListParserHandler(){}
 
-    public List<SushiEntry> getEntries(){
-        return entries;
+    public SushiList getList(){
+        return list;
     }
 
     @Override
     public void startDocument() throws SAXException {
         super.startDocument();
-        entries = new ArrayList<SushiEntry>();
         builder = new StringBuilder();
     }
 
     @Override
     public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, name, attributes);
-        if (localName.equalsIgnoreCase(ENTRY)){
+        if (localName.equalsIgnoreCase(ROOT_TAG)){
+            if(this.list == null){
+                list = new SushiList();
+                final String title = attributes.getValue("title");
+                final String timestamp = attributes.getValue("timestamp");
+                if(title != null)list.setTitle(title);
+                if(timestamp != null){
+                    try{
+                        Calendar date = Calendar.getInstance();
+                        date.setTimeInMillis(Long.parseLong(timestamp));
+                        list.setDate(date);
+                    }catch(NumberFormatException e){
+                        throw new SAXException(e);
+                    }
+                }
+            }else{
+                throw new SAXException("Unexpected root tag \"" + ROOT_TAG + "\"");
+            }
+        } else if (localName.equalsIgnoreCase(ENTRY)){
             this.currentEntry = new SushiEntry();
         }
     }
@@ -78,7 +95,7 @@ public class SushiListParserHandler extends DefaultHandler {
                     throw new SAXException(e);
                 }
             } else if (localName.equalsIgnoreCase(ENTRY)){
-                entries.add(currentEntry);
+                list.getEntries().add(currentEntry);
             }
             builder.setLength(0);
         }

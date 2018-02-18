@@ -2,17 +2,16 @@ package lu.kremi151.sushilist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import lu.kremi151.sushilist.util.SushiEntry;
+import lu.kremi151.sushilist.util.SushiList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
         ((ListView)findViewById(R.id.mainList)).setAdapter(adapter);
     }
 
-    private final Callback<List<SushiEntry>> sushiListener = new Callback<List<SushiEntry>>() {
+    private final Callback<SushiList> sushiListener = new Callback<SushiList>() {
         @Override
-        public void callback(List<SushiEntry> obj) {
+        public void callback(SushiList obj) {
             int pieces = 0;
             float price = 0.0f;
-            List<SushiEntry> list = adapter.getImmutableEntryList();
+            List<SushiEntry> list = obj.getEntries();
             for(SushiEntry entry : list){
                 pieces += entry.getPieces() * entry.getAmount();
                 price += entry.getPrice() * entry.getAmount();

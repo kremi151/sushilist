@@ -12,43 +12,46 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lu.kremi151.sushilist.util.SushiEntry;
+import lu.kremi151.sushilist.util.SushiList;
+
 /**
  * Created by michm on 17.02.2018.
  */
 
 public class SushiEntryAdapter extends BaseAdapter{
 
-    private final List<SushiEntry> list;
+    private final SushiList list;
     private final LayoutInflater inflater;
-    private final Callback<List<SushiEntry>> listener;
+    private final Callback<SushiList> listener;
 
-    SushiEntryAdapter(List<SushiEntry> list, LayoutInflater inflater, Callback<List<SushiEntry>> listener){
+    SushiEntryAdapter(SushiList list, LayoutInflater inflater, Callback<SushiList> listener){
         this.list = list;
         this.inflater = inflater;
         this.listener = listener;
     }
 
-    SushiEntryAdapter(LayoutInflater inflater, Callback<List<SushiEntry>> listener){
-        this(new ArrayList<SushiEntry>(), inflater, listener);
+    SushiEntryAdapter(LayoutInflater inflater, Callback<SushiList> listener){
+        this(new SushiList(), inflater, listener);
     }
 
     public List<SushiEntry> getImmutableEntryList(){
-        return Collections.unmodifiableList(list);
+        return Collections.unmodifiableList(list.getEntries());
     }
 
     public void addNewEntry(){
-        list.add(new SushiEntry());
+        list.getEntries().add(new SushiEntry());
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return list.getEntries().size();
     }
 
     @Override
     public Object getItem(int i) {
-        return list.get(i);
+        return list.getEntries().get(i);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class SushiEntryAdapter extends BaseAdapter{
         }else{
             holder = (EntryState) view.getTag();
         }
-        SushiEntry entry = list.get(i);
+        SushiEntry entry = list.getEntries().get(i);
         holder.referenced = entry;
         holder.entryName.setText(entry.getName());
         holder.entryPieces.setText(""+entry.getPieces());
