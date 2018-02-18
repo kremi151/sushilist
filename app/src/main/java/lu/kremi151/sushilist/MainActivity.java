@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                adapter.getList().getEntries().remove(viewHolder.getAdapterPosition());
-                adapter.notifyDataSetChanged();
+                adapter.removeEntry(viewHolder.getAdapterPosition());
             }
         });
 
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void switchList(SushiList list){
         adapter = new SushiEntryAdapter(list, getLayoutInflater(), sushiListener);
         listView.setAdapter(adapter);
-        updateTitle();
+        updateOrderInformation(list);
     }
 
     private void updateTitle(){
@@ -71,19 +70,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateOrderInformation(SushiList list){
+        int pieces = 0;
+        float price = 0.0f;
+        for(SushiEntry entry : list){
+            pieces += entry.getPieces() * entry.getAmount();
+            price += entry.getPrice() * entry.getAmount();
+        }
+        ((TextView)findViewById(R.id.globalAmountTypes)).setText("" + list.getEntries().size());
+        ((TextView)findViewById(R.id.globalTotalPieces)).setText("" + pieces);
+        ((TextView)findViewById(R.id.globalTotalPrice)).setText("" + price + "€");
+        updateTitle();
+    }
+
     private final Callback<SushiList> sushiListener = new Callback<SushiList>() {
         @Override
         public void callback(SushiList obj) {//TODO: Track value changements for saving
-            int pieces = 0;
-            float price = 0.0f;
-            List<SushiEntry> list = obj.getEntries();
-            for(SushiEntry entry : list){
-                pieces += entry.getPieces() * entry.getAmount();
-                price += entry.getPrice() * entry.getAmount();
-            }
-            ((TextView)findViewById(R.id.globalAmountTypes)).setText("" + list.size());
-            ((TextView)findViewById(R.id.globalTotalPieces)).setText("" + pieces);
-            ((TextView)findViewById(R.id.globalTotalPrice)).setText("" + price + "€");
+            updateOrderInformation(obj);
         }
     };
 

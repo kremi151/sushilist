@@ -40,6 +40,13 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         return list;
     }
 
+    public void removeEntry(int position){
+        list.getEntries().remove(position);
+        list.markDirty(true);
+        notifyDataSetChanged();
+        listener.callback(list);
+    }
+
     public List<SushiEntry> getImmutableEntryList(){
         return Collections.unmodifiableList(list.getEntries());
     }
@@ -64,11 +71,13 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
     @Override
     public void onBindViewHolder(SushiEntryViewHolder holder, int position) {
         SushiEntry entry = list.getEntries().get(position);
+        holder.canUpdate = false;
         holder.referenced = entry;
         holder.entryName.setText(entry.getName());
         holder.entryPieces.setText(String.valueOf(entry.getPieces()));
         holder.entryAmount.setText(String.valueOf(entry.getAmount()));
         holder.entryPrice.setText(String.valueOf(entry.getPrice()));
+        holder.canUpdate = true;
     }
 
     @Override
@@ -83,6 +92,7 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
 
     public static class SushiEntryViewHolder extends RecyclerView.ViewHolder {
         private SushiEntry referenced;
+        private boolean canUpdate = true;
         private final EditText entryName;
         private final EditText entryPieces;
         private final EditText entryAmount;
@@ -121,7 +131,7 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
         public void afterTextChanged(Editable editable) {
             if(state.referenced != null){
                 state.referenced.setName(editable.toString());
-                listener.callback(list);
+                if(state.canUpdate)listener.callback(list);
             }
         }
 
@@ -142,13 +152,13 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
                 if(input.length() > 0){
                     try{
                         state.referenced.setPieces(Integer.parseInt(input));
-                        listener.callback(list);
+                        if(state.canUpdate)listener.callback(list);
                     }catch(NumberFormatException e){
                         e.printStackTrace();
                     }
                 }else{
                     state.referenced.setPieces(0);
-                    listener.callback(list);
+                    if(state.canUpdate)listener.callback(list);
                 }
             }
         }
@@ -170,13 +180,13 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
                 if(input.length() > 0){
                     try{
                         state.referenced.setAmount(Integer.parseInt(input));
-                        listener.callback(list);
+                        if(state.canUpdate)listener.callback(list);
                     }catch(NumberFormatException e){
                         e.printStackTrace();
                     }
                 }else{
                     state.referenced.setAmount(0);
-                    listener.callback(list);
+                    if(state.canUpdate)listener.callback(list);
                 }
             }
         }
@@ -198,13 +208,13 @@ public class SushiEntryAdapter extends RecyclerView.Adapter<SushiEntryAdapter.Su
                 if(input.length() > 0){
                     try{
                         state.referenced.setPrice(Float.parseFloat(input));
-                        listener.callback(list);
+                        if(state.canUpdate)listener.callback(list);
                     }catch(NumberFormatException e){
                         e.printStackTrace();
                     }
                 }else{
                     state.referenced.setPrice(0.0f);
-                    listener.callback(list);
+                    if(state.canUpdate)listener.callback(list);
                 }
             }
         }
