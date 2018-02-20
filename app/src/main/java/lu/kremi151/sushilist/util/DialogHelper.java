@@ -96,6 +96,7 @@ public class DialogHelper {
         textView.setText(R.string.pleaseWait);
         layout.addView(textView);
         builder.setCancelable(false);
+        builder.setView(layout);
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         return dialog;

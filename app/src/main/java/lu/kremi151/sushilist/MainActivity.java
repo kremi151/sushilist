@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.mainList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setHasFixedSize(true);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(getResources()) {
 

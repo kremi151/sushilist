@@ -42,12 +42,17 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallba
         onRemove(viewHolder.getAdapterPosition());
     }
 
+    private int calculateDeleteBackgroundColorAlpha(float dX, float width){
+        return (int)(Math.min(Math.abs(2f * dX) / width, 1.0f) * 255f);
+    }
+
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             View itemView = viewHolder.itemView;
 
             paint.setColor(swipeToDeleteColor);
+            paint.setAlpha(calculateDeleteBackgroundColorAlpha(dX, itemView.getRight() - itemView.getLeft()));
             if (dX > 0) {
                 c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), paint);
                 //Not working
