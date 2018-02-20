@@ -2,6 +2,7 @@ package lu.kremi151.sushilist;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Stack;
 
 import lu.kremi151.sushilist.adapter.SushiEntryAdapter;
 import lu.kremi151.sushilist.serialization.SushiListParser;
@@ -29,12 +31,14 @@ import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
 import lu.kremi151.sushilist.util.SushiListReference;
 import lu.kremi151.sushilist.util.SwipeToDeleteCallback;
+import lu.kremi151.sushilist.util.Tuple;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView textViewTypes, textViewPieces, textViewPrice;
     private RecyclerView recyclerView;
     private SushiEntryAdapter adapter;
+    private final Stack<Tuple<SushiEntry, Integer>> undoStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +59,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onRemove(final int position) {
-                final SushiEntry removed = adapter.removeEntry(position);
+                undoStack.push(new Tuple<SushiEntry, Integer>(adapter.removeEntry(position), position));
                 Snackbar
-                        .make(findViewById(R.id.coordinatorLayout), getString(R.string.messageEntriesRemoved, 1), Snackbar.LENGTH_LONG)
+                        .make(findViewById(R.id.coordinatorLayout), getString(R.string.messageEntriesRemoved, undoStack.size()), Snackbar.LENGTH_LONG)
                         .setAction(R.string.actionUndo, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                adapter.insertEntry(position, removed);
+                                while(!undoStack.empty()){
+                                    Tuple<SushiEntry, Integer> removed = undoStack.pop();
+                                    adapter.insertEntry(removed.second, removed.first);
+                                }
+                            }
+                        })
+                        .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                            @Override
+                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                super.onDismissed(transientBottomBar, event);
+                                if(event != BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_CONSECUTIVE){
+                                    undoStack.clear();
+                                }
                             }
                         })
                         .show();
