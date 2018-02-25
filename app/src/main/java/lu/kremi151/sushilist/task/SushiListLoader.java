@@ -5,15 +5,13 @@ import android.os.AsyncTask;
 import java.io.IOException;
 
 import lu.kremi151.sushilist.Callback;
-import lu.kremi151.sushilist.serialization.SushiListParser;
 import lu.kremi151.sushilist.util.SushiList;
-import lu.kremi151.sushilist.util.SushiListReference;
 
 /**
  * Created by michm on 18.02.2018.
  */
 
-public class SushiListLoader extends AsyncTask<SushiListReference, Void, SushiList> {
+public class SushiListLoader extends AsyncTask<SushiList.Reference, Void, SushiList> {
 
     private final Callback<SushiList> callback;
 
@@ -22,7 +20,7 @@ public class SushiListLoader extends AsyncTask<SushiListReference, Void, SushiLi
     }
 
     @Override
-    protected SushiList doInBackground(SushiListReference... references) {
+    protected SushiList doInBackground(SushiList.Reference... references) {
         if(references.length > 0){
             try{
                 return references[0].resolve();

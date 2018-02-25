@@ -29,7 +29,6 @@ import lu.kremi151.sushilist.serialization.SushiListParser;
 import lu.kremi151.sushilist.util.DialogHelper;
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
-import lu.kremi151.sushilist.util.SushiListReference;
 import lu.kremi151.sushilist.util.SwipeToDeleteCallback;
 import lu.kremi151.sushilist.util.Tuple;
 
@@ -197,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
                     DialogHelper.buildLoadDialog(
                             this,
                             SushiListParser.getSavedReferences(this),
-                            new Callback<SushiListReference>() {
+                            new Callback<SushiList.Reference>() {
                                 @Override
-                                public void callback(SushiListReference obj) {
+                                public void callback(SushiList.Reference obj) {
                                     final AlertDialog waitDialog = DialogHelper.buildNonDismissableWaitDialog(MainActivity.this);
                                     waitDialog.show();
                                     obj.resolveAsync(new Callback<SushiList>() {

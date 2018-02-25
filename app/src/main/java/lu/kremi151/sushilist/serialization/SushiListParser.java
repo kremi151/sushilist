@@ -25,7 +25,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import lu.kremi151.sushilist.util.SushiEntry;
 import lu.kremi151.sushilist.util.SushiList;
-import lu.kremi151.sushilist.util.SushiListReference;
 
 import static lu.kremi151.sushilist.serialization.SushiListParserHandler.*;
 
@@ -103,12 +102,12 @@ public class SushiListParser {
         }));
     }
 
-    private static List<SushiListReference> referencesCache = null;
+    private static List<SushiList.Reference> referencesCache = null;
 
-    public static synchronized List<SushiListReference> getSavedReferences(Context context) throws IOException{
+    public static synchronized List<SushiList.Reference> getSavedReferences(Context context) throws IOException{
         if(referencesCache == null){
             List<File> files = getSavedLists(context);
-            ArrayList<SushiListReference> refs = new ArrayList<>(files.size());
+            ArrayList<SushiList.Reference> refs = new ArrayList<>(files.size());
             for(File file : files){
                 FileInputStream inputStream = null;
                 try {
@@ -124,7 +123,7 @@ public class SushiListParser {
                     if(date == null){
                         date = Calendar.getInstance();
                     }
-                    refs.add(new SushiListReference(title, date, file));
+                    refs.add(new SushiList.Reference(title, date, file));
                 } catch (ParserConfigurationException | SAXException | IOException e) {
                     throw new IOException(e);
                 } finally{

@@ -23,7 +23,7 @@ import lu.kremi151.sushilist.adapter.SushiReferenceAdapter;
 
 public class DialogHelper {
 
-    public static AlertDialog buildLoadDialog(Context context, final List<SushiListReference> referenceList, final Callback<SushiListReference> listener){
+    public static AlertDialog buildLoadDialog(Context context, final List<SushiList.Reference> referenceList, final Callback<SushiList.Reference> listener){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.dialogTitleLoadList);
         builder.setAdapter(

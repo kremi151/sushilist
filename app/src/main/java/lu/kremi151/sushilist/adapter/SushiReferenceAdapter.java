@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import lu.kremi151.sushilist.R;
-import lu.kremi151.sushilist.util.SushiListReference;
+import lu.kremi151.sushilist.util.SushiList;
 
 /**
  * Created by michm on 18.02.2018.
@@ -21,9 +21,9 @@ public class SushiReferenceAdapter extends BaseAdapter {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyy");;
 
     private final LayoutInflater inflater;
-    private final List<SushiListReference> refs;
+    private final List<SushiList.Reference> refs;
 
-    public SushiReferenceAdapter(LayoutInflater inflater, List<SushiListReference> refs){
+    public SushiReferenceAdapter(LayoutInflater inflater, List<SushiList.Reference> refs){
         this.inflater = inflater;
         this.refs = refs;
     }
@@ -56,7 +56,7 @@ public class SushiReferenceAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) view.getTag();
         }
-        SushiListReference ref = refs.get(i);
+        SushiList.Reference ref = refs.get(i);
         holder.title.setText(ref.getTitle());
         holder.date.setText(DATE_FORMAT.format(ref.getDate().getTime()));
         return view;
