@@ -59,6 +59,6 @@ public class SushiListReference {
     }
 
     public void resolveAsync(Callback<SushiList> callback){
-        new SushiListLoader(callback).execute(file);
+        new SushiListLoader(callback).execute(this);
     }
 }

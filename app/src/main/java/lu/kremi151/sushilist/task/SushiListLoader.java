@@ -2,21 +2,18 @@ package lu.kremi151.sushilist.task;
 
 import android.os.AsyncTask;
 
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import lu.kremi151.sushilist.Callback;
 import lu.kremi151.sushilist.serialization.SushiListParser;
 import lu.kremi151.sushilist.util.SushiList;
+import lu.kremi151.sushilist.util.SushiListReference;
 
 /**
  * Created by michm on 18.02.2018.
  */
 
-public class SushiListLoader extends AsyncTask<File, Void, SushiList> {
+public class SushiListLoader extends AsyncTask<SushiListReference, Void, SushiList> {
 
     private final Callback<SushiList> callback;
 
@@ -25,26 +22,12 @@ public class SushiListLoader extends AsyncTask<File, Void, SushiList> {
     }
 
     @Override
-    protected SushiList doInBackground(File... files) {
-        if(files.length > 0){
-            final File file = files[0];
-            FileInputStream inputStream = null;
+    protected SushiList doInBackground(SushiListReference... references) {
+        if(references.length > 0){
             try{
-                inputStream = new FileInputStream(file);
-                SushiList list = SushiListParser.parse(inputStream);
-                list.setFilename(file.getName().substring(0, file.getName().lastIndexOf(".")));
-                return list;
-            } catch(IOException | SAXException e){
-                SushiListParser.invalidateReferencesCache();
+                return references[0].resolve();
+            } catch(IOException e){
                 throw new RuntimeException(e);
-            } finally{
-                if(inputStream != null){
-                    try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }else{
             throw new RuntimeException("No file provided to load from");
