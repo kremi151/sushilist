@@ -16,6 +16,7 @@
     <string name="menuItemNewList">New list</string>
     <string name="menuItemSaveAs">Save list as...</string>
     <string name="pleaseWait">Please wait...</string>
+    <string name="messageEntryRemoved">Entry removed</string>
     <string name="messageEntriesRemoved">%d entries removed</string>
     <string name="actionUndo">Undo</string>
 </resources>

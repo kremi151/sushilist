@@ -61,7 +61,10 @@ public class MainActivity extends AppCompatActivity {
             protected void onRemove(final int position) {
                 undoStack.push(new Tuple<SushiEntry, Integer>(adapter.removeEntry(position), position));
                 Snackbar
-                        .make(findViewById(R.id.coordinatorLayout), getString(R.string.messageEntriesRemoved, undoStack.size()), Snackbar.LENGTH_LONG)
+                        .make(
+                                findViewById(R.id.coordinatorLayout),
+                                undoStack.size() > 1 ? getString(R.string.messageEntriesRemoved, undoStack.size()) : getString(R.string.messageEntryRemoved),
+                                Snackbar.LENGTH_LONG)
                         .setAction(R.string.actionUndo, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
