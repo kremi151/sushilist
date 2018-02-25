@@ -48,7 +48,7 @@ public class SushiListParser {
         }
     }
 
-    public static void write(OutputStream outputStream, SushiList entries) throws SAXException{
+    public static synchronized void write(OutputStream outputStream, SushiList entries) throws SAXException{
         XmlSerializer serializer = Xml.newSerializer();
         Writer writer = new OutputStreamWriter(outputStream);
         try {
@@ -93,7 +93,7 @@ public class SushiListParser {
         }
     }
 
-    public static List<File> getSavedLists(Context context){
+    public static synchronized List<File> getSavedLists(Context context){
         File dir = context.getFilesDir();
         return Arrays.asList(dir.listFiles(new FileFilter() {
             @Override
@@ -105,7 +105,7 @@ public class SushiListParser {
 
     private static List<SushiListReference> referencesCache = null;
 
-    public static List<SushiListReference> getSavedReferences(Context context) throws IOException{
+    public static synchronized List<SushiListReference> getSavedReferences(Context context) throws IOException{
         if(referencesCache == null){
             List<File> files = getSavedLists(context);
             ArrayList<SushiListReference> refs = new ArrayList<>(files.size());
@@ -138,7 +138,7 @@ public class SushiListParser {
         return referencesCache;
     }
 
-    public static void invalidateReferencesCache(){
+    public static synchronized void invalidateReferencesCache(){
         referencesCache = null;
     }
 

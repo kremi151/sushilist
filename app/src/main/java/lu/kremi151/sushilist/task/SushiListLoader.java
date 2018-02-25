@@ -35,6 +35,7 @@ public class SushiListLoader extends AsyncTask<File, Void, SushiList> {
                 list.setFilename(file.getName().substring(0, file.getName().lastIndexOf(".")));
                 return list;
             } catch(IOException | SAXException e){
+                SushiListParser.invalidateReferencesCache();
                 throw new RuntimeException(e);
             } finally{
                 if(inputStream != null){
