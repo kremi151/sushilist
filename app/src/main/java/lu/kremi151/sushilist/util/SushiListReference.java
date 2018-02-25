@@ -46,8 +46,10 @@ public class SushiListReference {
             list.setFilename(file.getName().substring(0, file.getName().lastIndexOf(".")));
             return list;
         }catch(IOException e){
+            SushiListParser.invalidateReferencesCache();
             throw e;
         } catch (SAXException e) {
+            SushiListParser.invalidateReferencesCache();
             throw new IOException(e);
         } finally{
             if(inputStream != null){

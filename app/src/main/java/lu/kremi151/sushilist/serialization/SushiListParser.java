@@ -86,6 +86,8 @@ public class SushiListParser {
             serializer.endDocument();
 
             writer.flush();
+
+            invalidateReferencesCache();
         } catch (Exception e) {
             throw new SAXException(e);
         }
@@ -101,34 +103,43 @@ public class SushiListParser {
         }));
     }
 
+    private static List<SushiListReference> referencesCache = null;
+
     public static List<SushiListReference> getSavedReferences(Context context) throws IOException{
-        List<File> files = getSavedLists(context);
-        ArrayList<SushiListReference> refs = new ArrayList<>(files.size());
-        for(File file : files){
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(file);
-                SAXParser parser = PARSER_FACTORY.newSAXParser();
-                SushiListMetaParserHandler handler = new SushiListMetaParserHandler();
-                parser.parse(inputStream, handler);
-                String title = handler.getTitle();
-                Calendar date = handler.getDate();
-                if(title == null){
-                    title = "Unnamed (" + file.getName() + ")";
-                }
-                if(date == null){
-                    date = Calendar.getInstance();
-                }
-                refs.add(new SushiListReference(title, date, file));
-            } catch (ParserConfigurationException | SAXException | IOException e) {
-                throw new IOException(e);
-            } finally{
-                if(inputStream != null){
-                    inputStream.close();
+        if(referencesCache == null){
+            List<File> files = getSavedLists(context);
+            ArrayList<SushiListReference> refs = new ArrayList<>(files.size());
+            for(File file : files){
+                FileInputStream inputStream = null;
+                try {
+                    inputStream = new FileInputStream(file);
+                    SAXParser parser = PARSER_FACTORY.newSAXParser();
+                    SushiListMetaParserHandler handler = new SushiListMetaParserHandler();
+                    parser.parse(inputStream, handler);
+                    String title = handler.getTitle();
+                    Calendar date = handler.getDate();
+                    if(title == null){
+                        title = "Unnamed (" + file.getName() + ")";
+                    }
+                    if(date == null){
+                        date = Calendar.getInstance();
+                    }
+                    refs.add(new SushiListReference(title, date, file));
+                } catch (ParserConfigurationException | SAXException | IOException e) {
+                    throw new IOException(e);
+                } finally{
+                    if(inputStream != null){
+                        inputStream.close();
+                    }
                 }
             }
+            referencesCache = refs;
         }
-        return refs;
+        return referencesCache;
+    }
+
+    public static void invalidateReferencesCache(){
+        referencesCache = null;
     }
 
 }
